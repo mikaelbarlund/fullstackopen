@@ -1,12 +1,19 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const Button = ({text, handleClick}) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-)
+const Button = ({text, handleClick}) => <button onClick={handleClick}>{text}</button>
+const Header = ({name}) =><h1>{name}</h1>
+const Anecdote = ({anecdote, anecdotePoints}) =><div>{anecdote}<br/>has {anecdotePoints} votes</div>
 
+const Best = ({anecdotes, points}) => {
+  let popular = points.indexOf(Math.max(...points))
+  return(
+    <>
+    <Header name="Anecdote with most votes"/>
+    <Anecdote anecdote={anecdotes[popular]} anecdotePoints={points[popular]} />
+    </>
+  )
+}
 
 const App = ({anecdotes}) => {
   const [selected, setSelected] = useState(0)
@@ -14,21 +21,16 @@ const App = ({anecdotes}) => {
 
   return (
     <>
-    <p>
-      {anecdotes[selected]}
-    </p>
-    <p>
-      has {points[selected]} votes
-    </p>
-    <p>
-      <Button text="next anecdote" handleClick={()=> {
+    <Header name="Anecdote of the day"/>
+    <Anecdote anecdote={anecdotes[selected]} anecdotePoints={points[selected]} />
+    <Button text="next anecdote" handleClick={()=> {
         let i = Math.floor(Math.random() * anecdotes.length)
-        const copy = { ...points }
+        const copy = [ ...points ]
         copy[i] += 1
         setSelected(i)
         setPoints(copy)
       }} />
-    </p>
+    <Best anecdotes={anecdotes} points={points} />
     </>
   )
 }
