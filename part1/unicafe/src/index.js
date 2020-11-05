@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 
 const Header = ({name}) =><h1>{name}</h1>
 
-const StatisticLine = ({name, count, units}) => <p>{name} {count} {units}</p>
+const StatisticLine = ({name, count, units}) => <tr><td>{name}</td><td>{count} {units}</td></tr>
 const Button = (props) => (
   <button onClick={props.handleClick}>
     {props.text}
@@ -26,12 +26,16 @@ const Statistics = ({good, neutral, bad}) => {
   return (
     <>
       <Header name="statistics"/>
+      <table>
+      <tbody>
       <StatisticLine name="good"     count={good}/>
       <StatisticLine name="neutral"  count={neutral}/>
       <StatisticLine name="bad"      count={bad}/>
       <StatisticLine name="all"      count={all}/>
       <StatisticLine name="average"  count={average}  units="%"/>
       <StatisticLine name="positive" count={positive} units="%"/>
+      </tbody>
+      </table>
     </>
   )
 }
