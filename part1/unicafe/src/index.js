@@ -15,6 +15,14 @@ const Statistics = ({good, neutral, bad}) => {
   let all = good+neutral+bad
   let average = (good-bad)/(all===0?1:all)
   let positive = (good)/(all===0?1:all)
+  if(all===0){
+    return (
+      <>
+        <Header name="statistics"/>
+        <p>No feedback given</p>
+      </>
+    )
+  } 
   return (
     <>
       <Header name="statistics"/>
