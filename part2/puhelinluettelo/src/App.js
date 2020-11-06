@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -8,10 +11,10 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
 
-  const [ filter, setFilter ] = useState('')
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
-  
+  const [filter, setFilter] = useState('')
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+
   const handleFilterChange = (event) => {
     setFilter(event.target.value)
   }
@@ -24,40 +27,28 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.map(a=>a.name).filter(a=>a===newName).length>0){
-    alert(`${newName} is already added to phonebook`)
+    if (persons.map(a => a.name).filter(a => a === newName).length > 0) {
+      alert(`${newName} is already added to phonebook`)
     } else {
-    const personObject = {
-      name: newName,
-      number: newNumber,
-      id: persons.length
-    }
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
+      const personObject = {
+        name: newName,
+        number: newNumber
+      }
+      setPersons(persons.concat(personObject))
+      setNewName('')
+      setNewNumber('')
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter:  <input value={filter} onChange={handleFilterChange}/></div>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h3>add new</h3>
-      <form onSubmit={addPerson}>
-        <div>name:  <input value={newName} onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit" >add</button>
-        </div>
-      </form>
+      <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h3>Numbers</h3>
-      <ul>
-        {persons.filter(person=>person.name.includes(filter)).map(person=><li key={person.id}>{person.name} {person.number}</li>)}
-      </ul>
-      
+      <Persons persons={persons} filter={filter} />
     </div>
   )
-
 }
-
 export default App
