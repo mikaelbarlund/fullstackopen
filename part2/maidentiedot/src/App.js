@@ -14,10 +14,11 @@ function App() {
       })
   }, [])
   const handleFilterChange = (event) => setFilter(event.target.value)
+  const handleShowButton = (value) => setFilter(value)
   return (
     <>
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
-      <Countries countries={countries} filter={filter}/>
+      <Countries countries={countries} filter={filter} handleShowButton={handleShowButton} />
     </>
   );
 }

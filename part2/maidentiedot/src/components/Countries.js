@@ -1,7 +1,8 @@
 import React from 'react'
 import Country from './Country'
 
-const Countires = ({ countries, filter }) => {
+const Countires = ({ countries, filter, handleShowButton }) => {
+
     let filteredCoutries = countries.filter(country => country.name.toLowerCase().includes(filter.toLowerCase()))
     if (filteredCoutries.length === 1) {
         return (
@@ -11,7 +12,7 @@ const Countires = ({ countries, filter }) => {
     if (filteredCoutries.length <= 10) {
         return (
             <>
-                {filteredCoutries.map(country => <div key={country.name} >{country.name}</div>)}
+                {filteredCoutries.map(country => <div key={country.name} >{country.name} <button onClick={() => handleShowButton(country.name)}>show</button></div>)}
             </>
         )
     }
