@@ -1,8 +1,10 @@
 import React from 'react'
 import Course from './components/Course'
+import Header from './components/Header'
 
 const App = () => {
-    const course = {
+  const courses = [
+    {
       name: 'Half Stack application development',
       id: 1,
       parts: [
@@ -23,21 +25,34 @@ const App = () => {
         },
         {
           name: 'Redux',
-          exercises: 22,
-          id: 6
+          exercises: 11,
+          id: 4
+        }
+      ]
+    }, 
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
         },
         {
-          name: 'Haskell',
-          exercises: 3,
-          id: 22
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
         }
       ]
     }
+  ]
   
     return (
-      <div>
-        <Course course={course} />
-      </div>
+      <>
+        <Header  name = "Web development curriculum" />
+        {courses.map(course => <Course course={course} />)}
+      </>
     )
   }
 

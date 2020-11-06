@@ -1,11 +1,11 @@
 import React   from 'react'
-import Header  from './Header'
+import Header2  from './Header2'
 import Content from './Content'
 import Total   from './Total'
 
 const Course =({course}) =>   (
     <>
-      <Header  name = {course.name} />
+      <Header2  name = {course.name} />
       <Content parts  = {course.parts}  />
       <Total   parts  = {course.parts}  />
     </>
