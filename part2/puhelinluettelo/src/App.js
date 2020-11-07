@@ -44,11 +44,13 @@ const App = () => {
 
   const deleteHandler = id => {
     console.log(id)
-    personService
-      .remove(id)
-      .then(() => {
-        setPersons(persons.filter(n => n.id !== id))
-      })
+    if (window.confirm(`Delete ${persons.find(n => n.id === id).name}`)) {
+      personService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(n => n.id !== id))
+        })
+    }
   }
 
   return (
