@@ -42,6 +42,15 @@ const App = () => {
     }
   }
 
+  const deleteHandler = id => {
+    console.log(id)
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(n => n.id !== id))
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -49,7 +58,7 @@ const App = () => {
       <h3>add new</h3>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h3>Numbers</h3>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} deleteHandler={deleteHandler} />
     </div>
   )
 }
