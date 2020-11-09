@@ -1,1 +1,1 @@
-# part2 puhelinluettelo
+# part2 puhelinluettelo frontend

@@ -5,7 +5,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Notification from './components/Notification'
-
+const personApi = '/api/persons'
 const App = () => {
   const [persons, setPersons] = useState([])
   const [filter, setFilter] = useState('')
@@ -57,7 +57,6 @@ const App = () => {
   }
 
   const deleteHandler = id => {
-    console.log(id)
     if (window.confirm(`Delete ${persons.find(n => n.id === id).name}`)) {
       personService
         .remove(id)
@@ -73,7 +72,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:3001/persons')
+      .get(personApi)
       .then(response => {
         setPersons(response.data)
       })
@@ -81,7 +80,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Phonebook!</h2>
       <Notification notification={notification} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h3>add new</h3>
