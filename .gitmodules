@@ -1,0 +1,3 @@
+[submodule "part2/puhelinluettelo-backend"]
+	path = part2/puhelinluettelo-backend
+	url = https://github.com/mikaelbarlund/puhelinluettelo-backend
