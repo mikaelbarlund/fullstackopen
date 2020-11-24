@@ -1,15 +1,12 @@
-const reducer = (state = null, action) => {
+const reducer = (state = { content: null, id: null }, action) => {
     console.log('state now: ', state)
     console.log('action', action)
     switch (action.type) {
         case 'SHOW':
-            return action.notification
-        case 'CREATE':
-            return `you added '${action.anecdote.content}'`
-        case 'LIKE':
-            return `you voted '${action.anecdote.content}'`
+            return action.data
         case 'HIDE':
-            return null
+            if (action.data.id === state.id) return action.data
+            else return state
         default: return state
     }
 }
@@ -17,13 +14,29 @@ const reducer = (state = null, action) => {
 export const show = (notification) => {
     return {
         type: 'SHOW',
-        notification: notification
+        data: { content: notification, id: null }
     }
 }
 
 export const hide = () => {
     return {
-        type: 'HIDE'
+        type: 'HIDE',
+        data: { content: null, id: null }
+    }
+}
+
+export const setNotification = (notification, delay) => {
+    return async dispatch => {
+        //if (timeoutID) clearTimeout(timeoutID)
+        const timeoutId = setTimeout(() => dispatch({
+            type: 'HIDE',
+            data: { content: null, id: timeoutId }
+        }), delay * 1000)
+        dispatch({
+            type: 'SHOW',
+            data: { content: notification, id: timeoutId }
+        })
+
     }
 }
 
