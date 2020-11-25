@@ -1,22 +1,10 @@
 
-import React, { useState } from 'react'
-import { useResource } from './hooks'
+import React from 'react'
+import { useResource, useField } from './hooks'
 
 
 
-const useField = (type) => {
-  const [value, setValue] = useState('')
 
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  return {
-    type,
-    value,
-    onChange
-  }
-}
 
 
 
