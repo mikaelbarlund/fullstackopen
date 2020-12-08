@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
-const BlogForm = ({ createBlog }) => {
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogsReducer'
+const BlogForm = () => {
+  const dispatch = useDispatch()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
   const addBlog = async (event) => {
     event.preventDefault()
-
-
-    createBlog({
+    dispatch(createBlog({
       title: title,
       author: author,
       url: url
-    })
+    }))
     setTitle('')
     setAuthor('')
     setUrl('')

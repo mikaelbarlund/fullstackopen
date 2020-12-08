@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
-
-const Blog = ({ blog, like, remove }) => {
+import { useDispatch } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogsReducer'
+import { Link } from 'react-router-dom'
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch()
   const [details, setDetails] = useState(false)
 
   const blogStyle = {
@@ -18,18 +21,18 @@ const Blog = ({ blog, like, remove }) => {
   if (!details) return (
     <>
       <div className="blog" style={blogStyle}>
-        {blog.title} {blog.author} <button onClick={toggleDetails}>show</button>
+        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link> <button onClick={toggleDetails}>show</button>
       </div>
     </>
   )
   else return (
     <>
       <div className="detailedblog" style={blogStyle}>
-        <div>{blog.title} <button onClick={toggleDetails}>hide</button> </div>
+        <div><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> <button onClick={toggleDetails}>hide</button> </div>
         <div>{blog.url}</div>
-        <div>likes {blog.likes}<button onClick={like}>like</button></div>
+        <div>likes {blog.likes}<button onClick={() => dispatch(likeBlog(blog))}>like</button></div>
         <div>{blog.author}</div>
-        <button onClick={remove}>remove</button>
+        <button onClick={() => dispatch(removeBlog(blog))}>remove</button>
       </div>
     </>
   )

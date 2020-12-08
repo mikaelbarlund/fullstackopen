@@ -22,5 +22,4 @@ export const showNotification = (notification, error) => {
 
   }
 }
-
 export default reducer
