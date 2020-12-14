@@ -21,8 +21,8 @@ describe('Blog ', function () {
   describe('Login  ', function () {
     it('succeeds with correct credentials', function () {
       cy.contains('login').click()
-      cy.get('#username').type('midas')
-      cy.get('#password').type('midas')
+      cy.get('#formLoginUsername').type('midas')
+      cy.get('#formLoginPassword').type('midas')
       cy.get('#login-button').click()
       cy.contains('Midas logged in')
       cy.contains('logout').click()
@@ -30,8 +30,8 @@ describe('Blog ', function () {
     })
     it('fails with wrong credentials', function () {
       cy.contains('login').click()
-      cy.get('#username').type('midas')
-      cy.get('#password').type('midasd')
+      cy.get('#formLoginUsername').type('midas')
+      cy.get('#formLoginPassword').type('xxx')
       cy.get('#login-button').click()
       cy.get('.notification').should('contain', 'wrong credentials')
         .and('have.css', 'color', 'rgb(255, 0, 0)')
@@ -46,10 +46,10 @@ describe('Blog ', function () {
     })
 
     it('a new blog can be created', function () {
-      cy.contains('create new blog').click()
+      cy.get('#create-new-blog-button').click()
       cy.get('#title').type('a blog created by cypress')
       cy.get('#author').type('Cypress Writer')
-      cy.get('#create-blog').click()
+      cy.get('#save-blog-changes').click()
       cy.contains('a blog created by cypress')
     })
 
@@ -60,20 +60,20 @@ describe('Blog ', function () {
         cy.createBlog({ title: 'a third blog exists', author: 'Cypress Writer' })
       })
       it('one can be liked', function () {
-        cy.contains('a blog exists Cypress Writer')
+        cy.contains('a blog exists Cypress Writer').parent().parent().parent()
           .contains('show')
           .click()
 
-        cy.contains('a blog exists ').parent()
-          .contains('like')
+        cy.contains('a blog exists ').parent().parent()
+          .get('#likeButton')
           .click()
         cy.contains('likes 1')
       })
       it('first can be removed', function () {
-        cy.contains('a blog exists Cypress Writer')
+        cy.contains('a blog exists Cypress Writer').parent().parent().parent()
           .contains('show')
           .click()
-        cy.contains('a blog exists ').parent()
+        cy.contains('a blog exists ').parent().parent()
           .contains('remove')
           .click()
         cy.get('.notification').should('contain', 'removed a blog exists')
@@ -89,10 +89,10 @@ describe('Blog ', function () {
         })
         cy.logout()
         cy.login({ username: 'elliot', password: 'elliot' })
-        cy.contains('a blog exists Cypress Writer')
+        cy.contains('a blog exists Cypress Writer').parent().parent().parent()
           .contains('show')
           .click()
-        cy.contains('a blog exists ').parent()
+        cy.contains('a blog exists ').parent().parent()
           .contains('remove')
           .click()
         cy.get('.notification').should('contain', 'cannot remove blog')

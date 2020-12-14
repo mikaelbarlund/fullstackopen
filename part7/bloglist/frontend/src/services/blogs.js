@@ -22,6 +22,14 @@ const update = async(token, id, newObject) => {
   return response.data
 }
 
+const addComment = async(token, id, newObject) => {
+  const config = {
+    headers: { Authorization: `bearer ${token}` },
+  }
+  const response =await axios.post(`${baseUrl}/${id}/comments`, newObject, config)
+  return response.data
+}
+
 const remove = async(token, id) => {
   const config = {
     headers: { Authorization: `bearer ${token}` },
@@ -29,4 +37,4 @@ const remove = async(token, id) => {
   const response =await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }
-export default { getAll, create, update, remove }
+export default { getAll, create, update, remove, addComment }

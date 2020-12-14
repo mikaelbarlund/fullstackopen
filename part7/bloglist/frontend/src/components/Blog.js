@@ -2,16 +2,11 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogsReducer'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 const Blog = ({ blog }) => {
+
   const dispatch = useDispatch()
   const [details, setDetails] = useState(false)
-
-  const blogStyle = {
-    borderStyle: 'solid',
-    borderRadius: '5px',
-    padding: '10px',
-    marginBottom: '10px'
-  }
 
   const toggleDetails = async () => {
     setDetails(!details)
@@ -20,20 +15,26 @@ const Blog = ({ blog }) => {
 
   if (!details) return (
     <>
-      <div className="blog" style={blogStyle}>
-        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link> <button onClick={toggleDetails}>show</button>
-      </div>
+      <tr key={blog.id}>
+        <td>
+          <div className="blog"><Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link></div>
+        </td>
+        <td><Button variant="outline-primary" onClick={toggleDetails}>show</Button></td>
+      </tr>
     </>
   )
   else return (
     <>
-      <div className="detailedblog" style={blogStyle}>
-        <div><Link to={`/blogs/${blog.id}`}>{blog.title}</Link> <button onClick={toggleDetails}>hide</button> </div>
-        <div>{blog.url}</div>
-        <div>likes {blog.likes}<button onClick={() => dispatch(likeBlog(blog))}>like</button></div>
-        <div>{blog.author}</div>
-        <button onClick={() => dispatch(removeBlog(blog))}>remove</button>
-      </div>
+      <tr key={blog.id}>
+        <td>
+          <div className="blog"><Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link></div>
+          <div>{blog.url}</div>
+          <div>likes {blog.likes}</div>
+          <div><Button variant="outline-primary" id="likeButton" onClick={() => dispatch(likeBlog(blog))}>like</Button><Button variant="outline-primary" onClick={() => dispatch(removeBlog(blog))}>remove</Button></div>
+        </td>
+        <td>  <Button variant="outline-primary" onClick={toggleDetails}>hide</Button>
+        </td>
+      </tr>
     </>
   )
 }

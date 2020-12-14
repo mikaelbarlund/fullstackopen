@@ -24,6 +24,22 @@ export const createBlog = (blog) => {
   }
 }
 
+export const commentBlog = (blog, comment) => {
+  return async (dispatch, getState) => {
+    try {
+      await blogService.addComment(getState().login.token, blog.id, { comment:comment })
+      const blogs = await blogService.getAll()
+      dispatch({
+        type: 'INIT_BLOGS',
+        data: blogs,
+      })
+      dispatch(showNotification(`added comment ${comment}`, false))
+    } catch (exception) {
+      dispatch(showNotification(`cannot comment blog ${blog.title}`, true))
+    }
+  }
+}
+
 export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
