@@ -5,7 +5,7 @@ query {
   allAuthors {
       name,
       born,
-     # bookCount
+      bookCount
     }
 }
 `
