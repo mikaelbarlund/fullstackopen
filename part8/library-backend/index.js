@@ -78,6 +78,7 @@ const resolvers = {
       return authors.length
     },
     allBooks: async (root, args) => {
+      console.log('args',args)
       let query = {}
       if (args.genre) query.genres = { $in: [args.genre] }
       let books = await Book.find(query).populate('author')
