@@ -5,6 +5,7 @@ import { ALL_BOOKS } from '../queries'
 const Books = ({ show, recommendation }) => {
   const [genre, setGenre] = useState(undefined)
   const [getAllBooks, allBooks] = useLazyQuery(ALL_BOOKS, { variables: { genre: genre } })
+  console.log('books',show,recommendation)
   useEffect(() => {
     if (show && recommendation) {
       setGenre(recommendation)
