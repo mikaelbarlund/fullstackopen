@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react'
-import { useQuery, useLazyQuery, useApolloClient } from '@apollo/client'
+import { useQuery, useLazyQuery, useSubscription, useApolloClient } from '@apollo/client'
 
-import { ME, ALL_AUTHORS } from './queries'
+import { ME, ALL_AUTHORS, BOOK_ADDED } from './queries'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -15,10 +15,7 @@ const App = () => {
   const [login, setLogin] = useState(false)
   const [page, setPage] = useState('authors')
   const authors = useQuery(ALL_AUTHORS)
-
-
   const [callMe, me] = useLazyQuery(ME)
-
   const client = useApolloClient()
   useEffect(() => {
     const storedToken = localStorage.getItem('library-user-token')
@@ -28,6 +25,11 @@ const App = () => {
     }
   }, [callMe])
 
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`${subscriptionData.data.bookAdded.title} added`)
+    }
+  })
   const logout = () => {
     setLogin(false)
     setToken(null)
