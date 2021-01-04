@@ -6,6 +6,7 @@ import { ME, ALL_AUTHORS } from './queries'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
+import Recommendations from './components/Recommendations'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
 
@@ -56,7 +57,7 @@ const App = () => {
       <Books
         show={page === 'books'}
       />
-      <Books
+      <Recommendations
         show={page === 'recommendations'}
         recommendation={me.called && !me.loading && me.data.me ? me.data.me.favoriteGenre : undefined}
       />
