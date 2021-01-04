@@ -21,8 +21,9 @@ const typeDefs = gql`
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String):[Book!]!
-    allAuthors:[Author!]!
+    allAuthors: [Author!]!
     me: User
+    genres: [String!]!
   }
   type Book {
     title: String!
@@ -89,6 +90,10 @@ const resolvers = {
     me: (root, args, context) => {
       return context.currentUser
     },
+    genres: async () => {
+      let books = await Book.find({})
+      return books.reduce((a, c) => [...a].concat(c.genres), []).filter((value, index, self) => self.indexOf(value) === index)
+    }
   },
   Author: {
     bookCount: async (root) => {

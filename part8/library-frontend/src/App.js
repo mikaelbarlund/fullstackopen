@@ -15,7 +15,9 @@ const App = () => {
   const [login, setLogin] = useState(false)
   const [page, setPage] = useState('authors')
   const authors = useQuery(ALL_AUTHORS)
-  const [callMe,me] = useLazyQuery(ME)
+
+
+  const [callMe, me] = useLazyQuery(ME)
 
   const client = useApolloClient()
   useEffect(() => {
@@ -26,13 +28,12 @@ const App = () => {
     }
   }, [callMe])
 
-  console.log('makkara',me)
   const logout = () => {
     setLogin(false)
     setToken(null)
     localStorage.clear()
     client.resetStore()
-    
+
   }
   const doLogin = (token) => {
     setLogin(false)

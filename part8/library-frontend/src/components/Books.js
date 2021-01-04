@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react'
-import { useLazyQuery } from '@apollo/client'
+import { useQuery,useLazyQuery } from '@apollo/client'
 
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS,ALL_GENRES } from '../queries'
 const Books = ({ show }) => {
   const [genre, setGenre] = useState(undefined)
+  const genres = useQuery(ALL_GENRES)
   const [getAllBooks, allBooks] = useLazyQuery(ALL_BOOKS, { variables: { genre: genre } })
 
   useEffect(() => {
     if (show) {
       getAllBooks()
-      console.log('useEffect genr', genre, show)
     }
-  }, [getAllBooks, genre, show])
+  }, [getAllBooks, show])
 
   if (!show || allBooks.loading || !allBooks.called) {
     return null
   }
   const books = allBooks.data.allBooks
-  const genres = books.reduce((a, c) => [...a].concat(c.genres), []).filter((value, index, self) => self.indexOf(value) === index)
 
   return (
     <div>
@@ -43,7 +42,7 @@ const Books = ({ show }) => {
           )}
         </tbody>
       </table>
-      <div>{genres.map(g => <button key={g} onClick={() => setGenre(g)}>{g}</button>)}
+      <div>{genres.loading ? '' : genres.data.genres.map(g => <button key={g} onClick={() => setGenre(g)}>{g}</button>)}
         <button onClick={() => setGenre()}>all genres</button>
       </div>
     </div>
