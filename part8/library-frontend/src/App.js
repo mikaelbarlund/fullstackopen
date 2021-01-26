@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useLazyQuery, useSubscription, useApolloClient } from '@apollo/client'
 
-import { ME, ALL_AUTHORS, BOOK_ADDED } from './queries'
+import { ME, ALL_AUTHORS, BOOK_ADDED, ALL_BOOKS } from './queries'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -17,6 +17,7 @@ const App = () => {
   const authors = useQuery(ALL_AUTHORS)
   const [callMe, me] = useLazyQuery(ME)
   const client = useApolloClient()
+
   useEffect(() => {
     const storedToken = localStorage.getItem('library-user-token')
     if (storedToken) {
@@ -25,9 +26,56 @@ const App = () => {
     }
   }, [callMe])
 
+  const updateCacheWith = (addedBook) => {
+    const hasBook = (set, object) =>
+      set.map(p => p.title).includes(object.title)
+
+    const hasAuthor = (set, author) =>
+      set.map(p => p.author).includes(author)
+
+    addedBook.genres.forEach(g => {
+      const oneGenre = client.readQuery({ query: ALL_BOOKS, variables: { genre: g } })
+      if (oneGenre && !hasBook(oneGenre.allBooks, addedBook)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          variables: { genre: g },
+          data: {
+            ...oneGenre,
+            allBooks: [...oneGenre.allBooks, addedBook]
+          }
+        })
+      }
+
+    })
+    const allGenres = client.readQuery({ query: ALL_BOOKS })
+    if (allGenres && !hasBook(allGenres.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: {
+          ...allGenres,
+          allBooks: [...allGenres.allBooks, addedBook]
+        }
+      })
+    }
+    const authorsInCache = client.readQuery({ query: ALL_AUTHORS })
+    if (authorsInCache && !hasAuthor(authorsInCache.allAuthors, addedBook.author)) {
+      const author = { name: addedBook.author }
+      client.writeQuery({
+        query: ALL_AUTHORS,
+        data: {
+          ...authorsInCache,
+          allAuthors: [...authorsInCache.allAuthors, author]
+        }
+      })
+    }
+  }
+
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      window.alert(`${subscriptionData.data.bookAdded.title} added`)
+      const addedBook = subscriptionData.data.bookAdded
+
+      window.alert(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
     }
   })
   const logout = () => {
