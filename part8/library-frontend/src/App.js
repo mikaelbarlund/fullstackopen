@@ -31,7 +31,7 @@ const App = () => {
       set.map(p => p.title).includes(object.title)
 
     const hasAuthor = (set, author) =>
-      set.map(p => p.author).includes(author)
+      set.map(p => p.name).includes(author)
 
     addedBook.genres.forEach(g => {
       const oneGenre = client.readQuery({ query: ALL_BOOKS, variables: { genre: g } })
@@ -58,15 +58,26 @@ const App = () => {
       })
     }
     const authorsInCache = client.readQuery({ query: ALL_AUTHORS })
-    if (authorsInCache && !hasAuthor(authorsInCache.allAuthors, addedBook.author)) {
-      const author = { name: addedBook.author }
-      client.writeQuery({
-        query: ALL_AUTHORS,
-        data: {
-          ...authorsInCache,
-          allAuthors: [...authorsInCache.allAuthors, author]
-        }
-      })
+    if (authorsInCache) {
+      if (!hasAuthor(authorsInCache.allAuthors, addedBook.author.name)) {
+        const author = { name: addedBook.author }
+        client.writeQuery({
+          query: ALL_AUTHORS,
+          data: {
+            ...authorsInCache,
+            allAuthors: [...authorsInCache.allAuthors, author]
+          }
+        })
+      } else {
+        const author = authorsInCache.allAuthors.find(a => a.name === addedBook.author.name)
+        client.writeQuery({
+          query: ALL_AUTHORS,
+          data: {
+            ...authorsInCache,
+            allAuthors: [...authorsInCache.allAuthors.filter(a => a.name !== author.name), { ...author, bookCount: author.bookCount + 1 }]
+          }
+        })
+      }
     }
   }
 

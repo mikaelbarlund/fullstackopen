@@ -28,6 +28,7 @@ const typeDefs = gql`
     name: String
     bookCount: Int
     born: Int
+    books: [Book!]!
   }
   type User {
     username: String!
@@ -89,8 +90,9 @@ const resolvers = {
       let books = await Book.find(query).populate('author')
       return books
     },
-    allAuthors: (root, args) => {
-      return Author.find({})
+    allAuthors: async (root, args) => {
+      let authors = await Author.find({})
+      return authors
     },
     me: (root, args, context) => {
       return context.currentUser
@@ -102,9 +104,7 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root) => {
-      let author = await Author.find({ name: root.name })
-      let books = await Book.find({ author: author })
-      return books.length
+      return root.books.length
     }
   },
   Mutation: {
@@ -122,6 +122,8 @@ const resolvers = {
         let author = await Author.findOneAndUpdate({ name: args.author }, { name: args.author }, { new: true, upsert: true, runValidators: true })
         const book = new Book({ ...args, author: author })
         await book.save()
+        author.books.push(book)
+        await author.save()
         pubsub.publish('BOOK_ADDED', { bookAdded: book })
         return book
       } catch (error) {
