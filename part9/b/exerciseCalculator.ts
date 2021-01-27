@@ -10,8 +10,8 @@ const parseExcerciseArguments = (args: Array<string>): ExcerciseInputValues => {
     return {
         target: Number(target),
         hours: hours.map(hour => Number(hour))
-    }
-}
+    };
+};
 
 interface Result {
     periodLength: number;
@@ -38,11 +38,15 @@ const calculateExercises = (hours: Array<number>, target: number): Result => {
         target: target,
         average: average
     };
-}
+};
 
-try {
-    const { target, hours } = parseExcerciseArguments(process.argv);
-    console.log(calculateExercises(hours, target));
-} catch (e) {
-    console.log('Error, something bad happened, message: ', e.message);
+if (process.argv[1].endsWith('exerciseCalculator.ts')) {
+    try {
+        const { target, hours } = parseExcerciseArguments(process.argv);
+        console.log(calculateExercises(hours, target));
+    } catch (e) {
+        const {message} = e as Error;
+        console.log('Error, something bad happened, message: ', message);
+    }
 }
+export { calculateExercises };

@@ -10,8 +10,8 @@ const parseBMIArguments = (args: Array<string>): BMIInputValues => {
     return {
         height: Number(height),
         mass: Number(mass)
-    }
-}
+    };
+};
 const calculateBmi = (height: number, mass: number): string => {
     const bmi = mass / Math.pow(height / 100, 2);
     return bmi < 15 ? 'Very severely underweight' :
@@ -22,13 +22,16 @@ const calculateBmi = (height: number, mass: number): string => {
                         bmi < 35 ? 'Obese Class I(Moderately obese)' :
                             bmi < 40 ? 'Obese Class II(Severely obese)' :
                                 'Obese Class III(Very severely obese)';
-}
+};
 
-try {
-    const { height, mass } = parseBMIArguments(process.argv);
-    console.log(calculateBmi(height, mass));
-} catch (e) {
-    console.log('Error, something bad happened, message: ', e.message);
+if (process.argv[1].endsWith('bmiCalculator.ts')) {
+    try {
+        const { height, mass } = parseBMIArguments(process.argv);
+        console.log(calculateBmi(height, mass));
+    } catch (e) {
+        const {message} = e as Error;
+        console.log('Error, something bad happened, message: ', message);
+    }
 }
 
 export { calculateBmi };
