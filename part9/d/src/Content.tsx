@@ -1,5 +1,6 @@
 import React from "react";
-import Part, { CoursePart } from './Part';
+import Part from './Part';
+import { CoursePart } from './types';
 
 const Content: React.FC<{ content: Array<CoursePart> }> = ({ content }) => {
     return (

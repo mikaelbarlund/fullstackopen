@@ -1,7 +1,7 @@
 import React from "react";
 import Header from './Header';
 import Content from './Content';
-import { CoursePart } from './Part';
+import { CoursePart } from './types';
 import Total from './Total';
 const App: React.FC = () => {
 
