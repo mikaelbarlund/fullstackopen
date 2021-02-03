@@ -11,7 +11,7 @@ const getEntries = (): Array<Patient> => {
 const getNonSensitiveEntries = (): NonSensitivePatient[] => {
     return patients.map(a => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { ssn, ...nonSensitive } = a;
+        const { ssn, entries, ...nonSensitive } = a;
         return nonSensitive;
     });
 };
