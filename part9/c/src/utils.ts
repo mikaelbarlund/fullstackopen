@@ -31,11 +31,11 @@ const parseGender = (input: unknown): Gender => {
     }
     switch (input) {
         case 'male':
-            return Gender.male;
+            return Gender.Male;
         case 'female':
-            return Gender.female;
+            return Gender.Female;
         case 'other':
-            return Gender.other;
+            return Gender.Other;
         default:
             throw new Error('Incorrect or missing gender.');
     }
