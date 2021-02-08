@@ -53,7 +53,7 @@ export type Entry =
     | HealthCheckEntry;
 
 export interface Patient {
-    id: string,
+    id: string;
     name: string,
     dateOfBirth: string,
     ssn: string,
@@ -71,6 +71,28 @@ export interface PatientRequest {
     occupation: string,
 }
 
+export interface EntryRequest {
+    type: "Hospital" | "OccupationalHealthcare" | "HealthCheck";
+    description: string;
+    date: string;
+    specialist: string;
+    healthCheckRating: HealthCheckRating;
+    diagnosisCodes?: Array<Diagnosis['code']>;
+    employerName: string;
+    sickLeave?: {
+        startDate: string;
+        endDate: string;
+    };
+    discharge?: {
+        date: string;
+        criteria: string;
+    };
+}
+
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
 export type NewPatient = Omit<Patient, 'id'>;
+export type NewEntry =
+    | Omit<HospitalEntry, 'id'>
+    | Omit<OccupationalHealthcareEntry, 'id'>
+    | Omit<HealthCheckEntry, 'id'>;
